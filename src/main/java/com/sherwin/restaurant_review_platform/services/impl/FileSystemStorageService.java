@@ -2,6 +2,7 @@ package com.sherwin.restaurant_review_platform.services.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,9 +76,20 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Optional<Resource> loadAsResource(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loadAsResource'");
+    public Optional<Resource> loadAsResource(String filename) {
+        try {
+            Path file = rootLocation.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return Optional.of(resource);
+            } else {
+                return Optional.empty();
+            }
+        } catch (MalformedURLException e) {
+            log.warn("Could not read file: " + filename, e);
+            return Optional.empty();
+        }
     }
 
 }

@@ -9,5 +9,5 @@ public interface StorageService {
 
     String store(MultipartFile file, String filename);
 
-    Optional<Resource> loadAsResource(String id);
+    Optional<Resource> loadAsResource(String filename);
 }
