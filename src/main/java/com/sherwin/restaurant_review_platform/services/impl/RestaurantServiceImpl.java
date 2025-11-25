@@ -67,4 +67,32 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
     }
 
+    @Override
+    public RestaurantDto updateRestaurant(Integer id, CreateRestaurantDto createRestaurantDto) {
+        validateRestaurantInformation(createRestaurantDto);
+
+        Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
+        if (restaurantOp.isEmpty()) {
+            throw new RuntimeException("Restaurant Not Found");
+        }
+
+        Restaurant restaurant = restaurantOp.get();
+        restaurant.setName(createRestaurantDto.getName());
+        restaurant.setCuisineType(createRestaurantDto.getCuisineType());
+        restaurant.setPhoneNumber(createRestaurantDto.getPhoneNumber());
+
+        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
+
+        return restaurantMapper.toDto(updatedRestaurant);
+    }
+
+    @Override
+    public void deleteRestaurant(Integer id) {
+        Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
+        if (restaurantOp.isEmpty()) {
+            throw new RuntimeException("Restaurant Not Found");
+        }
+        restaurantRepository.delete(restaurantOp.get());
+    }
+
 }

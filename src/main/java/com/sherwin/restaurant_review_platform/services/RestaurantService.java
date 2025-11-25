@@ -11,4 +11,8 @@ public interface RestaurantService {
     RestaurantDto createRestaurant(CreateRestaurantDto createRestaurantDto);
 
     RestaurantDto getRestaurantById(Integer id);
+
+    RestaurantDto updateRestaurant(Integer id, CreateRestaurantDto createRestaurantDto);
+
+    void deleteRestaurant(Integer id);
 }
