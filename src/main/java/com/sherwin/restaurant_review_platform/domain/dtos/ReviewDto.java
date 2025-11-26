@@ -1,7 +1,5 @@
 package com.sherwin.restaurant_review_platform.domain.dtos;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RestaurantDto {
+public class ReviewDto {
     private Integer id;
-    private String name;
-    private String cuisineType;
-    private String phoneNumber;
-    private Float averageRating;
-    private List<ReviewDto> reviews;
+    private String title;
+    private String content;
+    private Integer rating;
 }

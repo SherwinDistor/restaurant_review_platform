@@ -1,5 +1,6 @@
 package com.sherwin.restaurant_review_platform.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         newRestaurant.setCuisineType(createRestaurantDto.getCuisineType());
         newRestaurant.setPhoneNumber(createRestaurantDto.getPhoneNumber());
         newRestaurant.setAverageRating(0f);
+        newRestaurant.setCreatedAt(LocalDateTime.now());
+        newRestaurant.setUpdatedAt(LocalDateTime.now());
 
         Restaurant savedRestaurant = restaurantRepository.save(newRestaurant);
 
@@ -80,6 +83,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setName(createRestaurantDto.getName());
         restaurant.setCuisineType(createRestaurantDto.getCuisineType());
         restaurant.setPhoneNumber(createRestaurantDto.getPhoneNumber());
+        restaurant.setUpdatedAt(LocalDateTime.now());
 
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
 
