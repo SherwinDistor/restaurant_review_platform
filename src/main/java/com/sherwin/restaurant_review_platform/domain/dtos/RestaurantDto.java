@@ -2,6 +2,9 @@ package com.sherwin.restaurant_review_platform.domain.dtos;
 
 import java.util.List;
 
+import com.sherwin.restaurant_review_platform.domain.entities.Address;
+import com.sherwin.restaurant_review_platform.domain.entities.OperatingHours;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +21,6 @@ public class RestaurantDto {
     private String phoneNumber;
     private Float averageRating;
     private List<ReviewDto> reviews;
+    private Address address;
+    private OperatingHours operatingHours;
 }

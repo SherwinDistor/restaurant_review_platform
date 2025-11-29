@@ -25,10 +25,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<RestaurantDto> getAllRestaurants() {
         List<Restaurant> allRestaurants = restaurantRepository.findAll();
-        List<RestaurantDto> allRestaurantsDto = allRestaurants
-                .stream()
-                .map(restaurantMapper::toDto)
-                .toList();
+        List<RestaurantDto> allRestaurantsDto = restaurantMapper.toListDto(allRestaurants);
 
         return allRestaurantsDto;
     }
@@ -44,6 +41,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         newRestaurant.setAverageRating(0f);
         newRestaurant.setCreatedAt(LocalDateTime.now());
         newRestaurant.setUpdatedAt(LocalDateTime.now());
+        newRestaurant.setAddress(createRestaurantDto.getAddress());
+        newRestaurant.setOperatingHours(createRestaurantDto.getOperatingHours());
 
         Restaurant savedRestaurant = restaurantRepository.save(newRestaurant);
 
@@ -84,6 +83,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setCuisineType(createRestaurantDto.getCuisineType());
         restaurant.setPhoneNumber(createRestaurantDto.getPhoneNumber());
         restaurant.setUpdatedAt(LocalDateTime.now());
+        restaurant.setAddress(createRestaurantDto.getAddress());
+        restaurant.setOperatingHours(createRestaurantDto.getOperatingHours());
 
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
 

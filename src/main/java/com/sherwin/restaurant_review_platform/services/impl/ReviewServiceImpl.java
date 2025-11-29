@@ -34,7 +34,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         List<Review> restaurantReviews = reviewRepository.findByRestaurant(restaurantOp.get());
 
-        List<ReviewDto> restaurantReviewDtos = restaurantReviews.stream().map(reviewMapper::toDto).toList();
+        System.out.println(reviewRepository.findAverageRatingByRestaurant(restaurantOp.get()));
+
+        List<ReviewDto> restaurantReviewDtos = reviewMapper.toListDto(restaurantReviews);
 
         return restaurantReviewDtos;
     }
@@ -48,16 +50,27 @@ public class ReviewServiceImpl implements ReviewService {
             throw new RuntimeException("Restaurant Not Found");
         }
 
+        Restaurant restaurant = restaurantOp.get();
+
         Review newReview = new Review();
         newReview.setTitle(createReviewForRestaurantDto.getTitle());
         newReview.setContent(createReviewForRestaurantDto.getContent());
         newReview.setRating(createReviewForRestaurantDto.getRating());
         newReview.setCreatedAt(LocalDateTime.now());
-        newReview.setRestaurant(restaurantOp.get());
+        newReview.setRestaurant(restaurant);
 
         reviewRepository.save(newReview);
 
+        // Update restaurant's average review
+        updateRestaurantAverageRating(restaurant);
+
         return reviewMapper.toDto(newReview);
+    }
+
+    private void updateRestaurantAverageRating(Restaurant restaurant) {
+        Float averageRating = reviewRepository.findAverageRatingByRestaurant(restaurant);
+        restaurant.setAverageRating(averageRating);
+        restaurantRepository.save(restaurant);
     }
 
 }

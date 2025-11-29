@@ -27,16 +27,23 @@ public class RestaurantMapperImpl implements RestaurantMapper {
         restaurantDto.setCuisineType(restaurant.getCuisineType());
         restaurantDto.setPhoneNumber(restaurant.getPhoneNumber());
         restaurantDto.setAverageRating(restaurant.getAverageRating());
+        restaurantDto.setAddress(restaurant.getAddress());
+        restaurantDto.setOperatingHours(restaurant.getOperatingHours());
 
         List<Review> reviews = restaurant.getReviews();
-        List<ReviewDto> reviewDtos = reviews
-                .stream()
-                .map(reviewMapper::toDto)
-                .toList();
+        List<ReviewDto> reviewDtos = reviewMapper.toListDto(reviews);
 
         restaurantDto.setReviews(reviewDtos);
 
         return restaurantDto;
+    }
+
+    @Override
+    public List<RestaurantDto> toListDto(List<Restaurant> restaurants) {
+        return restaurants
+                .stream()
+                .map(restaurant -> toDto(restaurant))
+                .toList();
     }
 
 }

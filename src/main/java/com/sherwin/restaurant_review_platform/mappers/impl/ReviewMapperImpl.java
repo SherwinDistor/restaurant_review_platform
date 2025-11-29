@@ -1,5 +1,7 @@
 package com.sherwin.restaurant_review_platform.mappers.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.sherwin.restaurant_review_platform.domain.dtos.ReviewDto;
@@ -19,6 +21,11 @@ public class ReviewMapperImpl implements ReviewMapper {
         reviewDto.setRating(review.getRating());
 
         return reviewDto;
+    }
+
+    @Override
+    public List<ReviewDto> toListDto(List<Review> reviews) {
+        return reviews.stream().map(review -> toDto(review)).toList();
     }
 
 }
