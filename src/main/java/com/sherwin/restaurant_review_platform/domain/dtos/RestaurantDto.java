@@ -1,6 +1,7 @@
 package com.sherwin.restaurant_review_platform.domain.dtos;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.sherwin.restaurant_review_platform.domain.entities.Address;
 import com.sherwin.restaurant_review_platform.domain.entities.OperatingHours;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RestaurantDto {
-    private Integer id;
+    private UUID id;
     private String name;
     private String cuisineType;
     private String phoneNumber;

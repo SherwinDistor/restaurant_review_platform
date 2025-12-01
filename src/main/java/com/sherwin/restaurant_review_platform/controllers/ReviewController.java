@@ -1,9 +1,11 @@
 package com.sherwin.restaurant_review_platform.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<List<ReviewDto>> getAllReviewsByRestaurant(@PathVariable Integer restaurantId) {
+    public ResponseEntity<List<ReviewDto>> getAllReviewsByRestaurant(@PathVariable UUID restaurantId) {
         List<ReviewDto> allReviewsByRestaurant = reviewService.getAllReviewsByRestaurant(restaurantId);
 
         return new ResponseEntity<>(allReviewsByRestaurant, HttpStatus.OK);
@@ -33,12 +35,18 @@ public class ReviewController {
 
     @PostMapping("/{restaurantId}")
     public ResponseEntity<ReviewDto> createNewReviewForRestaurant(
-            @PathVariable Integer restaurantId,
+            @PathVariable UUID restaurantId,
             @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
         ReviewDto reviewForRestaurant = reviewService.createReviewForRestaurant(restaurantId,
                 createReviewForRestaurantDto);
 
         return new ResponseEntity<>(reviewForRestaurant, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{restaurantId}/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable UUID restaurantId, @PathVariable UUID reviewId) {
+        reviewService.deleteReviewForRestaurant(restaurantId, reviewId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

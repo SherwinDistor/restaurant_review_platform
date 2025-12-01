@@ -3,6 +3,7 @@ package com.sherwin.restaurant_review_platform.services.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto getRestaurantById(Integer id) {
+    public RestaurantDto getRestaurantById(UUID id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
             throw new RuntimeException("Restaurant Not Found FOOL");
@@ -70,7 +71,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto updateRestaurant(Integer id, CreateRestaurantDto createRestaurantDto) {
+    public RestaurantDto updateRestaurant(UUID id, CreateRestaurantDto createRestaurantDto) {
         validateRestaurantInformation(createRestaurantDto);
 
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
@@ -92,7 +93,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void deleteRestaurant(Integer id) {
+    public void deleteRestaurant(UUID id) {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
         if (restaurantOp.isEmpty()) {
             throw new RuntimeException("Restaurant Not Found");

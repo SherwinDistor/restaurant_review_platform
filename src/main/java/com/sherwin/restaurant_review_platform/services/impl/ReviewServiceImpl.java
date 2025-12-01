@@ -3,6 +3,7 @@ package com.sherwin.restaurant_review_platform.services.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
 
     @Override
-    public List<ReviewDto> getAllReviewsByRestaurant(Integer restaurantId) {
+    public List<ReviewDto> getAllReviewsByRestaurant(UUID restaurantId) {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
         if (restaurantOp.isEmpty()) {
             throw new RuntimeException("Restaurant Not Found");
@@ -42,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDto createReviewForRestaurant(Integer restaurantId,
+    public ReviewDto createReviewForRestaurant(UUID restaurantId,
             CreateReviewForRestaurantDto createReviewForRestaurantDto) {
 
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
@@ -71,6 +72,17 @@ public class ReviewServiceImpl implements ReviewService {
         Float averageRating = reviewRepository.findAverageRatingByRestaurant(restaurant);
         restaurant.setAverageRating(averageRating);
         restaurantRepository.save(restaurant);
+    }
+
+    @Override
+    public void deleteReviewForRestaurant(UUID restaurantId, UUID reviewId) {
+        Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
+        if (restaurantOp.isEmpty()) {
+            throw new RuntimeException("Restaurant Not Found");
+        }
+
+        reviewRepository.deleteById(reviewId);
+        updateRestaurantAverageRating(restaurantOp.get());
     }
 
 }

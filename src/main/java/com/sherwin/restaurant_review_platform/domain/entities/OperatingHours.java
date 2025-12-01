@@ -2,6 +2,7 @@ package com.sherwin.restaurant_review_platform.domain.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,8 +24,8 @@ import lombok.NoArgsConstructor;
 public class OperatingHours {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "operating_hours_id")

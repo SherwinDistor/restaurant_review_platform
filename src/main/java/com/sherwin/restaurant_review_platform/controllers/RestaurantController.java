@@ -1,6 +1,7 @@
 package com.sherwin.restaurant_review_platform.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Integer id) {
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable UUID id) {
         RestaurantDto restaurant = restaurantService.getRestaurantById(id);
 
         return new ResponseEntity<>(restaurant, HttpStatus.OK);
@@ -48,7 +49,7 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     public ResponseEntity<RestaurantDto> updateRestaurant(
-            @PathVariable Integer id,
+            @PathVariable UUID id,
             @RequestBody CreateRestaurantDto createRestaurantDto) {
 
         RestaurantDto updatedRestaurant = restaurantService.updateRestaurant(id, createRestaurantDto);
@@ -57,7 +58,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable UUID id) {
         restaurantService.deleteRestaurant(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
