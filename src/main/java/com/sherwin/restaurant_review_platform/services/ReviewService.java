@@ -12,5 +12,12 @@ public interface ReviewService {
     ReviewDto createReviewForRestaurant(UUID restaurantId,
             CreateReviewForRestaurantDto createReviewForRestaurantDto);
 
+    ReviewDto getReviewById(UUID reviewId);
+
+    ReviewDto updateReviewForRestaurant(
+            UUID restaurantId,
+            UUID reviewId,
+            CreateReviewForRestaurantDto createReviewForRestaurantDto);
+
     void deleteReviewForRestaurant(UUID restaurantId, UUID reviewId);
 }

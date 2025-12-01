@@ -19,6 +19,7 @@ public class ReviewMapperImpl implements ReviewMapper {
         reviewDto.setTitle(review.getTitle());
         reviewDto.setContent(review.getContent());
         reviewDto.setRating(review.getRating());
+        reviewDto.setUpdatedAt(review.getUpdatedAt());
 
         return reviewDto;
     }

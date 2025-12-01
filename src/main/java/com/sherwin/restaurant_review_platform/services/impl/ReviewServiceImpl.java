@@ -58,6 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
         newReview.setContent(createReviewForRestaurantDto.getContent());
         newReview.setRating(createReviewForRestaurantDto.getRating());
         newReview.setCreatedAt(LocalDateTime.now());
+        newReview.setUpdatedAt(LocalDateTime.now());
         newReview.setRestaurant(restaurant);
 
         reviewRepository.save(newReview);
@@ -72,6 +73,39 @@ public class ReviewServiceImpl implements ReviewService {
         Float averageRating = reviewRepository.findAverageRatingByRestaurant(restaurant);
         restaurant.setAverageRating(averageRating);
         restaurantRepository.save(restaurant);
+    }
+
+    @Override
+    public ReviewDto getReviewById(UUID reviewId) {
+        Optional<Review> reviewOp = reviewRepository.findById(reviewId);
+        if (reviewOp.isEmpty()) {
+            throw new RuntimeException("Review Not Found");
+        }
+
+        return reviewMapper.toDto(reviewOp.get());
+    }
+
+    @Override
+    public ReviewDto updateReviewForRestaurant(UUID restaurantId, UUID reviewId,
+            CreateReviewForRestaurantDto createReviewForRestaurantDto) {
+        Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
+        Optional<Review> reviewOp = reviewRepository.findById(reviewId);
+        if (restaurantOp.isEmpty()) {
+            throw new RuntimeException("Restaurant Not Found");
+        } else if (reviewOp.isEmpty()) {
+            throw new RuntimeException("Review Not Found");
+        }
+
+        Review review = reviewOp.get();
+        review.setTitle(createReviewForRestaurantDto.getTitle());
+        review.setContent(createReviewForRestaurantDto.getContent());
+        review.setRating(createReviewForRestaurantDto.getRating());
+        review.setUpdatedAt(LocalDateTime.now());
+
+        reviewRepository.save(review);
+        updateRestaurantAverageRating(restaurantOp.get());
+
+        return reviewMapper.toDto(review);
     }
 
     @Override

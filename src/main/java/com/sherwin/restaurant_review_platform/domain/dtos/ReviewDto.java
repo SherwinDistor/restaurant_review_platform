@@ -1,5 +1,6 @@
 package com.sherwin.restaurant_review_platform.domain.dtos;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -16,4 +17,5 @@ public class ReviewDto {
     private String title;
     private String content;
     private Integer rating;
+    private LocalDateTime updatedAt;
 }

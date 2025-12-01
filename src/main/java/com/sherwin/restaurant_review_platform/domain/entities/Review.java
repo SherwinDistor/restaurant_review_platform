@@ -28,6 +28,7 @@ public class Review {
     private String content;
     private Integer rating;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,14 +27,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/{restaurantId}")
+    @GetMapping("/restaurant/{restaurantId}")
     public ResponseEntity<List<ReviewDto>> getAllReviewsByRestaurant(@PathVariable UUID restaurantId) {
         List<ReviewDto> allReviewsByRestaurant = reviewService.getAllReviewsByRestaurant(restaurantId);
 
         return new ResponseEntity<>(allReviewsByRestaurant, HttpStatus.OK);
     }
 
-    @PostMapping("/{restaurantId}")
+    @PostMapping("/restaurant/{restaurantId}")
     public ResponseEntity<ReviewDto> createNewReviewForRestaurant(
             @PathVariable UUID restaurantId,
             @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
@@ -41,6 +42,23 @@ public class ReviewController {
                 createReviewForRestaurantDto);
 
         return new ResponseEntity<>(reviewForRestaurant, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable UUID reviewId) {
+        ReviewDto reviewDto = reviewService.getReviewById(reviewId);
+        return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{restaurantId}/{reviewId}")
+    public ResponseEntity<ReviewDto> updateReview(
+            @PathVariable UUID restaurantId,
+            @PathVariable UUID reviewId,
+            @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
+        ReviewDto updatedReviewDto = reviewService.updateReviewForRestaurant(restaurantId, reviewId,
+                createReviewForRestaurantDto);
+
+        return new ResponseEntity<>(updatedReviewDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{restaurantId}/{reviewId}")
