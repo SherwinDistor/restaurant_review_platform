@@ -24,4 +24,5 @@ public class RestaurantDto {
     private List<ReviewDto> reviews;
     private Address address;
     private OperatingHours operatingHours;
+    private List<PhotoDto> photos;
 }

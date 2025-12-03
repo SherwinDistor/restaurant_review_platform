@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sherwin.restaurant_review_platform.domain.dtos.CreateRestaurantDto;
 import com.sherwin.restaurant_review_platform.domain.dtos.RestaurantDto;
 import com.sherwin.restaurant_review_platform.domain.entities.Restaurant;
+import com.sherwin.restaurant_review_platform.exceptions.BaseException;
 import com.sherwin.restaurant_review_platform.mappers.RestaurantMapper;
 import com.sherwin.restaurant_review_platform.repositories.RestaurantRepository;
 import com.sherwin.restaurant_review_platform.services.RestaurantService;
@@ -99,6 +100,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             throw new RuntimeException("Restaurant Not Found");
         }
         restaurantRepository.delete(restaurantOp.get());
+        new BaseException("Test");
     }
 
 }

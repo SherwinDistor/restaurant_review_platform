@@ -48,4 +48,8 @@ public class Restaurant {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "operating_hours_id")
     private OperatingHours operatingHours;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Photo> photos = new ArrayList<>();
 }
