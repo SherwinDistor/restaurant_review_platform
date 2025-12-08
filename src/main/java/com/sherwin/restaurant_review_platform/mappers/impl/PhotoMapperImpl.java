@@ -14,6 +14,7 @@ public class PhotoMapperImpl implements PhotoMapper {
   @Override
   public PhotoDto toDto(Photo photo) {
     PhotoDto newPhotoDto = new PhotoDto();
+    newPhotoDto.setId(photo.getId());
     newPhotoDto.setUrl(photo.getUrl());
     newPhotoDto.setUploadedAt(photo.getUploadedAt());
     return newPhotoDto;

@@ -11,6 +11,8 @@ import com.sherwin.restaurant_review_platform.domain.dtos.CreateReviewForRestaur
 import com.sherwin.restaurant_review_platform.domain.dtos.ReviewDto;
 import com.sherwin.restaurant_review_platform.domain.entities.Restaurant;
 import com.sherwin.restaurant_review_platform.domain.entities.Review;
+import com.sherwin.restaurant_review_platform.exceptions.RestaurantException;
+import com.sherwin.restaurant_review_platform.exceptions.ReviewException;
 import com.sherwin.restaurant_review_platform.mappers.ReviewMapper;
 import com.sherwin.restaurant_review_platform.repositories.RestaurantRepository;
 import com.sherwin.restaurant_review_platform.repositories.ReviewRepository;
@@ -30,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDto> getAllReviewsByRestaurant(UUID restaurantId) {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         }
 
         List<Review> restaurantReviews = reviewRepository.findByRestaurant(restaurantOp.get());
@@ -48,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         }
 
         Restaurant restaurant = restaurantOp.get();
@@ -79,7 +81,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDto getReviewById(UUID reviewId) {
         Optional<Review> reviewOp = reviewRepository.findById(reviewId);
         if (reviewOp.isEmpty()) {
-            throw new RuntimeException("Review Not Found");
+            throw new ReviewException("Review Not Found");
         }
 
         return reviewMapper.toDto(reviewOp.get());
@@ -91,9 +93,9 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
         Optional<Review> reviewOp = reviewRepository.findById(reviewId);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         } else if (reviewOp.isEmpty()) {
-            throw new RuntimeException("Review Not Found");
+            throw new ReviewException("Review Not Found");
         }
 
         Review review = reviewOp.get();
@@ -112,7 +114,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void deleteReviewForRestaurant(UUID restaurantId, UUID reviewId) {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         }
 
         reviewRepository.deleteById(reviewId);

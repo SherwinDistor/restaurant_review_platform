@@ -10,8 +10,8 @@ import com.sherwin.restaurant_review_platform.domain.dtos.ErrorResponseDto;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseDto> handleException(RuntimeException ex) {
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponseDto> handleException(BaseException ex) {
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto();
         errorResponseDto.setStatus(HttpStatus.BAD_REQUEST.value());

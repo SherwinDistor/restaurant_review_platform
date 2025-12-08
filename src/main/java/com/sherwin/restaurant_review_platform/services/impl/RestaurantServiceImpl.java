@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sherwin.restaurant_review_platform.domain.dtos.CreateRestaurantDto;
 import com.sherwin.restaurant_review_platform.domain.dtos.RestaurantDto;
 import com.sherwin.restaurant_review_platform.domain.entities.Restaurant;
-import com.sherwin.restaurant_review_platform.exceptions.BaseException;
+import com.sherwin.restaurant_review_platform.exceptions.RestaurantException;
 import com.sherwin.restaurant_review_platform.mappers.RestaurantMapper;
 import com.sherwin.restaurant_review_platform.repositories.RestaurantRepository;
 import com.sherwin.restaurant_review_platform.services.RestaurantService;
@@ -55,7 +55,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantDto getRestaurantById(UUID id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         if (restaurant.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found FOOL");
+            throw new RestaurantException("Restaurant Not Found FOOL");
         }
 
         return restaurantMapper.toDto(restaurant.get());
@@ -63,11 +63,11 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private void validateRestaurantInformation(CreateRestaurantDto createRestaurantDto) {
         if (createRestaurantDto.getName().isBlank()) {
-            throw new RuntimeException("Restaurant name can not be blank");
+            throw new RestaurantException("Restaurant name can not be blank");
         } else if (createRestaurantDto.getCuisineType().isBlank()) {
-            throw new RuntimeException("Restaurant cuisine type can not be blank");
+            throw new RestaurantException("Restaurant cuisine type can not be blank");
         } else if (createRestaurantDto.getPhoneNumber().isBlank()) {
-            throw new RuntimeException("Restaurant phone number can not be blank");
+            throw new RestaurantException("Restaurant phone number can not be blank");
         }
     }
 
@@ -77,7 +77,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         }
 
         Restaurant restaurant = restaurantOp.get();
@@ -97,10 +97,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void deleteRestaurant(UUID id) {
         Optional<Restaurant> restaurantOp = restaurantRepository.findById(id);
         if (restaurantOp.isEmpty()) {
-            throw new RuntimeException("Restaurant Not Found");
+            throw new RestaurantException("Restaurant Not Found");
         }
         restaurantRepository.delete(restaurantOp.get());
-        new BaseException("Test");
+    }
+
+    @Override
+    public List<RestaurantDto> searchRestaurant(String keyword) {
+        List<Restaurant> searchRestaurant = restaurantRepository.searchRestaurant(keyword);
+        List<RestaurantDto> searchRestaurantDtos = restaurantMapper.toListDto(searchRestaurant);
+
+        return searchRestaurantDtos;
     }
 
 }

@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sherwin.restaurant_review_platform.domain.dtos.PhotoDto;
 import com.sherwin.restaurant_review_platform.domain.entities.Photo;
 import com.sherwin.restaurant_review_platform.domain.entities.Restaurant;
+import com.sherwin.restaurant_review_platform.exceptions.RestaurantException;
+import com.sherwin.restaurant_review_platform.exceptions.StorageException;
 import com.sherwin.restaurant_review_platform.mappers.PhotoMapper;
 import com.sherwin.restaurant_review_platform.repositories.PhotoRepository;
 import com.sherwin.restaurant_review_platform.repositories.RestaurantRepository;
@@ -35,10 +37,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     System.out.println("Called storage service");
 
-    // TODO: figure out how to link restaurant to uploaded photo
     Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
     if (restaurantOp.isEmpty()) {
-      throw new RuntimeException("Restaurant Not Found");
+      throw new RestaurantException("Restaurant Not Found");
     }
 
     Restaurant restaurant = restaurantOp.get();
@@ -54,8 +55,13 @@ public class PhotoServiceImpl implements PhotoService {
   }
 
   @Override
-  public Optional<Resource> getPhotoAsResource(String id) {
-    return storageService.loadAsResource(id);
+  public Resource getPhotoAsResource(String filename) {
+    Optional<Resource> resourceOp = storageService.loadAsResource(filename);
+    if (resourceOp.isEmpty()) {
+      throw new StorageException("Image could not be found");
+    }
+
+    return resourceOp.get();
   }
 
 }

@@ -16,4 +16,6 @@ public interface RestaurantService {
     RestaurantDto updateRestaurant(UUID id, CreateRestaurantDto createRestaurantDto);
 
     void deleteRestaurant(UUID id);
+
+    List<RestaurantDto> searchRestaurant(String keyword);
 }
