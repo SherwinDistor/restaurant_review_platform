@@ -1,5 +1,6 @@
 package com.sherwin.restaurant_review_platform;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,6 +47,7 @@ public class RestaurantReviewPlatformApplication {
 			restaurantUserAdmin.setUsername("admin");
 			restaurantUserAdmin.setPassword(passwordEncoder.encode("password"));
 			restaurantUserAdmin.setAuthorities(roles);
+			restaurantUserAdmin.setCreatedAt(LocalDateTime.now());
 
 			restaurantUserRepository.save(restaurantUserAdmin);
 

@@ -1,5 +1,6 @@
 package com.sherwin.restaurant_review_platform.domain.entities;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,12 +36,15 @@ public class RestaurantUser implements UserDetails {
 
   private String username;
   private String password;
+  private LocalDateTime createdAt;
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user_role_junction", joinColumns = {
       @JoinColumn(name = "restaurant_user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
   @Builder.Default
   private Set<Role> authorities = new HashSet<>();
+
+  // Add One to Many relationship to list of Reviews by user
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
