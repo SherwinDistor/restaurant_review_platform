@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,46 +28,52 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin
 public class ReviewController {
 
-    private final ReviewService reviewService;
+  private final ReviewService reviewService;
 
-    @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<ReviewDto>> getAllReviewsByRestaurant(@PathVariable UUID restaurantId) {
-        List<ReviewDto> allReviewsByRestaurant = reviewService.getAllReviewsByRestaurant(restaurantId);
+  @GetMapping("/restaurant/{restaurantId}")
+  public ResponseEntity<List<ReviewDto>> getAllReviewsByRestaurant(@PathVariable UUID restaurantId) {
+    List<ReviewDto> allReviewsByRestaurant = reviewService.getAllReviewsByRestaurant(restaurantId);
 
-        return new ResponseEntity<>(allReviewsByRestaurant, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(allReviewsByRestaurant, HttpStatus.OK);
+  }
 
-    @PostMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<ReviewDto> createNewReviewForRestaurant(
-            @PathVariable UUID restaurantId,
-            @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
-        ReviewDto reviewForRestaurant = reviewService.createReviewForRestaurant(restaurantId,
-                createReviewForRestaurantDto);
+  // MODEL: integrated user with Authentication object to link review to
+  // restaurant and user
+  // TODO: make changes to other endpoints to update user
+  @PostMapping("/restaurant/{restaurantId}")
+  public ResponseEntity<ReviewDto> createNewReviewForRestaurant(
+      @PathVariable UUID restaurantId,
+      @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto,
+      Authentication authentication) {
+    ReviewDto reviewForRestaurant = reviewService.createReviewForRestaurant(
+        restaurantId,
+        createReviewForRestaurantDto,
+        authentication.getName());
 
-        return new ResponseEntity<>(reviewForRestaurant, HttpStatus.CREATED);
-    }
+    return new ResponseEntity<>(reviewForRestaurant, HttpStatus.CREATED);
+  }
 
-    @GetMapping("/{reviewId}")
-    public ResponseEntity<ReviewDto> getReviewById(@PathVariable UUID reviewId) {
-        ReviewDto reviewDto = reviewService.getReviewById(reviewId);
-        return new ResponseEntity<>(reviewDto, HttpStatus.OK);
-    }
+  @GetMapping("/{reviewId}")
+  public ResponseEntity<ReviewDto> getReviewById(@PathVariable UUID reviewId) {
+    ReviewDto reviewDto = reviewService.getReviewById(reviewId);
+    return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+  }
 
-    @PutMapping("/{restaurantId}/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(
-            @PathVariable UUID restaurantId,
-            @PathVariable UUID reviewId,
-            @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
-        ReviewDto updatedReviewDto = reviewService.updateReviewForRestaurant(restaurantId, reviewId,
-                createReviewForRestaurantDto);
+  @PutMapping("/{restaurantId}/{reviewId}")
+  public ResponseEntity<ReviewDto> updateReview(
+      @PathVariable UUID restaurantId,
+      @PathVariable UUID reviewId,
+      @RequestBody CreateReviewForRestaurantDto createReviewForRestaurantDto) {
+    ReviewDto updatedReviewDto = reviewService.updateReviewForRestaurant(restaurantId, reviewId,
+        createReviewForRestaurantDto);
 
-        return new ResponseEntity<>(updatedReviewDto, HttpStatus.OK);
-    }
+    return new ResponseEntity<>(updatedReviewDto, HttpStatus.OK);
+  }
 
-    @DeleteMapping("/{restaurantId}/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable UUID restaurantId, @PathVariable UUID reviewId) {
-        reviewService.deleteReviewForRestaurant(restaurantId, reviewId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @DeleteMapping("/{restaurantId}/{reviewId}")
+  public ResponseEntity<Void> deleteReview(@PathVariable UUID restaurantId, @PathVariable UUID reviewId) {
+    reviewService.deleteReviewForRestaurant(restaurantId, reviewId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
 }
