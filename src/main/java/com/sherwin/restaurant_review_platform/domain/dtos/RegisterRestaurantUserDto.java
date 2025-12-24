@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RegisterRestaurantUserDto {
+  private String firstName;
+  private String lastName;
   private String username;
   private String password;
 }

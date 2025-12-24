@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sherwin.restaurant_review_platform.domain.dtos.LoginRequestDto;
+import com.sherwin.restaurant_review_platform.domain.dtos.LoginResponseDto;
 import com.sherwin.restaurant_review_platform.domain.dtos.RegisterRestaurantUserDto;
 import com.sherwin.restaurant_review_platform.domain.dtos.RestaurantUserDto;
 import com.sherwin.restaurant_review_platform.services.AuthenticationService;
@@ -25,6 +27,13 @@ public class AuthenticationController {
     RestaurantUserDto registeredUser = authenticationService.registerUser(registerRestaurantUserDto);
 
     return registeredUser;
+  }
+
+  @PostMapping("/login")
+  public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
+    LoginResponseDto loginUser = authenticationService.loginUser(loginRequestDto);
+
+    return loginUser;
   }
 
 }

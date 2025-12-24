@@ -34,6 +34,8 @@ public class RestaurantUser implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  private String firstName;
+  private String lastName;
   private String username;
   private String password;
   private LocalDateTime createdAt;

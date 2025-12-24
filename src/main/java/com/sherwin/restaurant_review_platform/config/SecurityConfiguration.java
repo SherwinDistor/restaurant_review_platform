@@ -40,7 +40,7 @@ public class SecurityConfiguration {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET, "/api/v1/restaurant/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
             .anyRequest().authenticated())
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -56,6 +56,8 @@ public class SecurityConfiguration {
   @Bean
   public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
     DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
+    daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+
     ProviderManager providerManager = new ProviderManager(daoAuthenticationProvider);
 
     return providerManager;
