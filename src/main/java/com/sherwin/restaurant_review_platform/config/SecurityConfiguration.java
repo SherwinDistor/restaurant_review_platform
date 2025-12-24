@@ -6,7 +6,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +15,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.JWK;
@@ -39,10 +40,15 @@ public class SecurityConfiguration {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.GET, "/api/v1/restaurant/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/v1/restaurant/**").permitAll()
+            .requestMatchers(HttpMethod.POST, "/api/v1/restaurant/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/api/v1/restaurant/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurant/**").hasRole("ADMIN")
             .anyRequest().authenticated())
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+        .oauth2ResourceServer(
+            oauth2 -> oauth2.jwt(
+                jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     return http.build();
@@ -83,5 +89,18 @@ public class SecurityConfiguration {
     NimbusJwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource);
 
     return jwtEncoder;
+  }
+
+  @Bean
+  public JwtAuthenticationConverter jwtAuthenticationConverter() {
+
+    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+    jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+
+    return jwtAuthenticationConverter;
   }
 }
