@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,6 @@ import com.sherwin.restaurant_review_platform.services.RestaurantService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor

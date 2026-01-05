@@ -1,6 +1,7 @@
 package com.sherwin.restaurant_review_platform.services.impl;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ public class TokenService {
   public String generateJwt(Authentication authentication) {
 
     Instant now = Instant.now();
+    Instant expiry = now.plus(1, ChronoUnit.HOURS);
 
     String scope = authentication.getAuthorities()
         .stream().map(GrantedAuthority::getAuthority)
@@ -31,6 +33,7 @@ public class TokenService {
     JwtClaimsSet claims = JwtClaimsSet.builder()
         .issuer("self")
         .issuedAt(now)
+        .expiresAt(expiry)
         .subject(authentication.getName())
         .claim("roles", scope)
         .build();
