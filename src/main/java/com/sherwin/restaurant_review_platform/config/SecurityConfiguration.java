@@ -49,6 +49,7 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/v1/restaurant/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/v1/photo/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/v1/restaurant/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.PUT, "/api/v1/restaurant/**").hasRole("ADMIN")
             .requestMatchers(HttpMethod.DELETE, "/api/v1/restaurant/**").hasRole("ADMIN")

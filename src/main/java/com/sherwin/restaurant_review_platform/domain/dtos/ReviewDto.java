@@ -18,4 +18,5 @@ public class ReviewDto {
     private String content;
     private Integer rating;
     private LocalDateTime updatedAt;
+    private String author;
 }

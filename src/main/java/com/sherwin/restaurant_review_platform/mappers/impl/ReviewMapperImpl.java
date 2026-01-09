@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.sherwin.restaurant_review_platform.domain.dtos.ReviewDto;
+import com.sherwin.restaurant_review_platform.domain.entities.RestaurantUser;
 import com.sherwin.restaurant_review_platform.domain.entities.Review;
 import com.sherwin.restaurant_review_platform.mappers.ReviewMapper;
 
@@ -20,6 +21,9 @@ public class ReviewMapperImpl implements ReviewMapper {
         reviewDto.setContent(review.getContent());
         reviewDto.setRating(review.getRating());
         reviewDto.setUpdatedAt(review.getUpdatedAt());
+
+        RestaurantUser restaurantUser = review.getRestaurantUser();
+        reviewDto.setAuthor(restaurantUser.getFirstName());
 
         return reviewDto;
     }
