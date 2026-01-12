@@ -66,4 +66,17 @@ public class PhotoServiceImpl implements PhotoService {
     return resourceOp.get();
   }
 
+  @Override
+  public void deletePhoto(UUID photoId) {
+    Optional<Photo> photoOp = photoRepository.findById(photoId);
+    if (photoOp.isEmpty()) {
+      throw new StorageException("Photo not found");
+    }
+
+    Photo photo = photoOp.get();
+
+    storageService.delete(photo.getUrl());
+    photoRepository.delete(photo);
+  }
+
 }

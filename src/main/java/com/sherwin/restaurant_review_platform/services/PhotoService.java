@@ -11,4 +11,6 @@ public interface PhotoService {
   PhotoDto uploadPhoto(MultipartFile file, UUID restaurantId);
 
   Resource getPhotoAsResource(String filename);
+
+  void deletePhoto(UUID photoId);
 }

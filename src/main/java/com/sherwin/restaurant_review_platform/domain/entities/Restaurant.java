@@ -49,7 +49,7 @@ public class Restaurant {
     @JoinColumn(name = "operating_hours_id")
     private OperatingHours operatingHours;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<Photo> photos = new ArrayList<>();
 }
