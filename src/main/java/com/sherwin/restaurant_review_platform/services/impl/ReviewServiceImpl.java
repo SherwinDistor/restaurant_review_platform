@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sherwin.restaurant_review_platform.domain.dtos.CreateReviewForRestaurantDto;
 import com.sherwin.restaurant_review_platform.domain.dtos.ReviewDto;
@@ -23,6 +24,7 @@ import com.sherwin.restaurant_review_platform.services.ReviewService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 

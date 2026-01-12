@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sherwin.restaurant_review_platform.domain.dtos.RestaurantUserDto;
 import com.sherwin.restaurant_review_platform.domain.entities.RestaurantUser;
@@ -16,6 +17,7 @@ import com.sherwin.restaurant_review_platform.services.RestaurantUserService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RestaurantUserServiceImpl implements UserDetailsService, RestaurantUserService {
 

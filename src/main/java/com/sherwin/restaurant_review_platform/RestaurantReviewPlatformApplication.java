@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +22,12 @@ public class RestaurantReviewPlatformApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantReviewPlatformApplication.class, args);
 	}
+
+	@Value("${security.email}")
+	private String email;
+
+	@Value("${security.password}")
+	private String password;
 
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepository,
@@ -44,8 +51,8 @@ public class RestaurantReviewPlatformApplication {
 			roles.add(saveAdmin);
 
 			RestaurantUser restaurantUserAdmin = new RestaurantUser();
-			restaurantUserAdmin.setUsername("admin");
-			restaurantUserAdmin.setPassword(passwordEncoder.encode("password"));
+			restaurantUserAdmin.setUsername(email);
+			restaurantUserAdmin.setPassword(passwordEncoder.encode(password));
 			restaurantUserAdmin.setAuthorities(roles);
 			restaurantUserAdmin.setCreatedAt(LocalDateTime.now());
 

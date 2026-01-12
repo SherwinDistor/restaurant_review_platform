@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sherwin.restaurant_review_platform.domain.dtos.PhotoDto;
@@ -22,6 +23,7 @@ import com.sherwin.restaurant_review_platform.services.StorageService;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PhotoServiceImpl implements PhotoService {
 
