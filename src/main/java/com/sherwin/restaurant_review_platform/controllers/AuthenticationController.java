@@ -13,6 +13,9 @@ import com.sherwin.restaurant_review_platform.services.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -32,6 +35,11 @@ public class AuthenticationController {
     LoginResponseDto loginUser = authenticationService.loginUser(loginRequestDto);
 
     return loginUser;
+  }
+
+  @GetMapping("/health")
+  public ResponseEntity<Void> healthCheck() {
+    return ResponseEntity.ok().build();
   }
 
 }
