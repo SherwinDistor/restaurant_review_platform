@@ -42,8 +42,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     List<Review> restaurantReviews = reviewRepository.findByRestaurant(restaurantOp.get());
 
-    System.out.println(reviewRepository.findAverageRatingByRestaurant(restaurantOp.get()));
-
     List<ReviewDto> restaurantReviewDtos = reviewMapper.toListDto(restaurantReviews);
 
     return restaurantReviewDtos;

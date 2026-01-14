@@ -37,8 +37,6 @@ public class PhotoServiceImpl implements PhotoService {
     String photoId = UUID.randomUUID().toString();
     String photoUrl = storageService.store(file, photoId);
 
-    System.out.println("Called storage service");
-
     Optional<Restaurant> restaurantOp = restaurantRepository.findById(restaurantId);
     if (restaurantOp.isEmpty()) {
       throw new RestaurantException("Restaurant Not Found");

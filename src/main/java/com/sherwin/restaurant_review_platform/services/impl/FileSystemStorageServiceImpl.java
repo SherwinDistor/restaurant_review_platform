@@ -36,7 +36,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
     rootLocation = Paths.get(storageLocation);
 
     try {
-      System.out.println("Init run, created folder");
+
       Files.createDirectories(rootLocation);
     } catch (IOException e) {
       throw new StorageException("Could not initialize storage location", e);
@@ -46,7 +46,6 @@ public class FileSystemStorageServiceImpl implements StorageService {
 
   @Override
   public String store(MultipartFile file, String filename) {
-    System.out.println("File system store called...");
 
     try {
 
@@ -57,14 +56,10 @@ public class FileSystemStorageServiceImpl implements StorageService {
       String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
       String finalFilename = filename + "." + extension;
 
-      System.out.println("Grab extension and create final file name");
-
       Path destinationFile = rootLocation
           .resolve(Paths.get(finalFilename))
           .normalize()
           .toAbsolutePath();
-
-      System.out.println("Resolve run, to get path of destination file");
 
       if (!destinationFile.getParent().equals(rootLocation.toAbsolutePath())) {
         throw new StorageException("Cannot store file outside specified directory");
@@ -73,8 +68,6 @@ public class FileSystemStorageServiceImpl implements StorageService {
       try (InputStream inputStream = file.getInputStream()) {
         Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
       }
-
-      System.out.println("Try to save file");
 
       return finalFilename;
 

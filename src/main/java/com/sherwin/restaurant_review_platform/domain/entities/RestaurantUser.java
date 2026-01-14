@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +41,11 @@ public class RestaurantUser implements UserDetails {
 
   private String firstName;
   private String lastName;
+
+  @Column(nullable = false, unique = true)
   private String username;
+
+  @Column(nullable = false)
   private String password;
   private LocalDateTime createdAt;
 

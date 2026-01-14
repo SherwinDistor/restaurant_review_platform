@@ -31,11 +31,8 @@ public class PhotoController {
   @PostMapping("/{restaurantId}")
   public ResponseEntity<PhotoDto> uploadPhoto(@RequestParam("file") MultipartFile file,
       @PathVariable UUID restaurantId) {
-    System.out.println("Controller hit");
 
     PhotoDto uploadPhotoDto = photoService.uploadPhoto(file, restaurantId);
-
-    System.out.println("Called photo service");
 
     return new ResponseEntity<>(uploadPhotoDto, HttpStatus.CREATED);
   }
